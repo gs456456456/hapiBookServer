@@ -21,13 +21,13 @@ module.exports = (sequelize, DataTypes) => sequelize.define(
         email: {
             type: DataTypes.STRING(30),
         },
-        follower_id: {
-            type: DataTypes.INTEGER,
-            references: {
-                model: 'users',
-                key: 'id'
-            }
-        },
+        // follower_id: {
+        //     type: DataTypes.INTEGER,
+        //     references: {
+        //         model: 'users',
+        //         key: 'id'
+        //     }
+        // },
         introduction: {
             type: DataTypes.STRING(50),
         },

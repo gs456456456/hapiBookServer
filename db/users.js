@@ -1,32 +1,27 @@
 // 引入 models
 const models = require("../models");
+const code = require('../lib/code')
 queryUser = async (parms,value) =>{
     let _obj = {};
         _obj[parms] = value
-    console.log(_obj)
-    let result = await models.users.findAll({
-        where: _obj
-      });
-      if(result!==null){
-        reponseMess={
-            code:1,
-            message:'已经在数据库中查询到'
-        }
-    }else{
-        reponseMess={
-            code:-1,
-            message:'未已经在数据库中查询到'
-        }
+    try{
+        let result = await models.users.findAll({
+            where: _obj
+          });
+        return {result:result,dataBaseError:false}
     }
-    return result
+    catch(e){
+        return {result:e,dataBaseError:true}
+    }
 }
-// user.prototype.createUser = async () => {
+
+// createUser = async () => {
 
 // }
-// user.prototype.modifyUser = async () =>{
+// modifyUser = async () =>{
 
 // }
-// user.prototype.deleteUser = async () =>{
+// deleteUser = async () =>{
 
 // }
 
