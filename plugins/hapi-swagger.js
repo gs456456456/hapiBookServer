@@ -18,6 +18,8 @@ module.exports =
       grouping: 'tags',
       tags: [
         { name: 'tests', description: '测试相关' },
+        { name: 'users', description: '用户相关'},
+        { name: 'books', description: '书籍相关'}
       ]
     }
   }
