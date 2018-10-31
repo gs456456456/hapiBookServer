@@ -1,12 +1,10 @@
 // 引入 models
 const models = require("../models");
-const code = require('../lib/code')
-queryUser = async (parms,value) =>{
-    let _obj = {};
-        _obj[parms] = value
+const code = require('../lib/code');
+queryUser = async (parms) =>{
     try{
         let result = await models.users.findAll({
-            where: _obj
+            where: parms
           });
         return {result:result,dataBaseError:false}
     }
@@ -15,9 +13,15 @@ queryUser = async (parms,value) =>{
     }
 }
 
-// createUser = async () => {
-
-// }
+createUser = async (parms) => {
+    try{
+        let result = await models.users.create(parms);
+        return {result:'success',dataBaseError:false}
+    }
+    catch(e){
+        return {result:e,dataBaseError:true}
+    }
+}
 // modifyUser = async () =>{
 
 // }
@@ -27,5 +31,6 @@ queryUser = async (parms,value) =>{
 
 
 module.exports = {
-    queryUser:queryUser
+    queryUser:queryUser,
+    createUser:createUser
 }

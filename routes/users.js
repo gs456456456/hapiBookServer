@@ -1,22 +1,18 @@
 const users = require('../db/users');
 const code = require('../lib/code');
 const utils = require('../lib/utils');
+const middleware = require('../middleware')
 const Joi = require('joi');
 
 const GROUP_NAME = 'user';
 module.exports = [
   {
     method: 'GET',
-    path: '/user/queryUserById',
+    path: `/${GROUP_NAME}/queryUserById`,
     handler: async (request, reply) => {
-      let request_id = request.query.id;
-      let res = await users.queryUser('id', request_id);
-      if (res.dataBaseError) {
-        reply(code.formatCode(2, null, res.result.message))
-      }
-      else {
-        reply(code.formatCode(1, res.result, null))
-      }
+      let query = request.query;
+      let res = await users.queryUser(query);
+      middleware.dbErrorMiddleware(res,reply)
     },
     config: {
       tags: ['api', GROUP_NAME],
@@ -27,6 +23,63 @@ module.exports = [
         }
       },
     }
+  },
+  {
+    method: 'POST',
+    path: `/${GROUP_NAME}/addUser`,
+    handler: async (request, reply) => {
+      let parms = request.payload;
+      let res = await users.createUser(parms);
+      middleware.dbErrorMiddleware(res,reply)
+    },
+    config: {
+      tags: ['api', GROUP_NAME],
+      description: '添加新用户',
+      validate: {
+        payload: Joi.object().keys({
+            name: Joi.string().required(),
+            email: Joi.string(),
+          })
+      },
+    }
+  },
+  // {
+  //   method: 'POST',
+  //   path: `/${GROUP_NAME}/modfiyUserInfo`,
+  //   handler: async (request, reply) => {
+  //     let parms = request.payload;
+  //     let res = await users.createUser(parms);
+  //     middleware.dbErrorMiddleware(res,reply)
+  //   },
+  //   config: {
+  //     tags: ['api', GROUP_NAME],
+  //     description: '修改用户信息',
+  //     validate: {
+  //       payload: Joi.object().keys({
+  //           name: Joi.string().required(),
+  //           email: Joi.string(),
+  //         })
+  //     },
+  //   }
+  // },
+  // {
+  //   method: 'POST',
+  //   path: `/${GROUP_NAME}/deleteUser`,
+  //   handler: async (request, reply) => {
+  //     let parms = request.payload;
+  //     let res = await users.createUser(parms);
+  //     middleware.dbErrorMiddleware(res,reply)
+  //   },
+  //   config: {
+  //     tags: ['api', GROUP_NAME],
+  //     description: '添加新用户',
+  //     validate: {
+  //       payload: Joi.object().keys({
+  //           name: Joi.string().required(),
+  //           email: Joi.string(),
+  //         })
+  //     },
+  //   }
+  // },
 
-  }
 ]

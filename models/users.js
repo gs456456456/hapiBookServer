@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => sequelize.define(
         },
         type: {
             type: DataTypes.STRING(10),
-            allowNull: false
+            defaultValue: 'user'
         },
         isAdmin: {
             type: DataTypes.BOOLEAN,
