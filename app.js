@@ -4,6 +4,8 @@ const config = require('./config');
 const routes = require('./routes');
 const pluginHapiSwagger = require('./plugins/hapi-swagger');
 const log = require('./log')
+const pluginHapiPagination = require('./plugins/hapi-pagination');
+
 
 const server = new Hapi.Server();
 server.connection({
@@ -17,6 +19,7 @@ const init = async () => {
   await server.register([
     // 为系统使用 hapi-swagger
     ...pluginHapiSwagger,
+    pluginHapiPagination.pageOptions,
     log.logOptions
   ]);
   server.route([

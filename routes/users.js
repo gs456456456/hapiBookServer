@@ -38,48 +38,52 @@ module.exports = [
       validate: {
         payload: Joi.object().keys({
             name: Joi.string().required(),
-            email: Joi.string(),
+            email: Joi.string().required(),
+            type:Joi.string(),
+            introduction:Joi.string()
           })
       },
     }
   },
-  // {
-  //   method: 'POST',
-  //   path: `/${GROUP_NAME}/modfiyUserInfo`,
-  //   handler: async (request, reply) => {
-  //     let parms = request.payload;
-  //     let res = await users.createUser(parms);
-  //     middleware.dbErrorMiddleware(res,reply)
-  //   },
-  //   config: {
-  //     tags: ['api', GROUP_NAME],
-  //     description: '修改用户信息',
-  //     validate: {
-  //       payload: Joi.object().keys({
-  //           name: Joi.string().required(),
-  //           email: Joi.string(),
-  //         })
-  //     },
-  //   }
-  // },
-  // {
-  //   method: 'POST',
-  //   path: `/${GROUP_NAME}/deleteUser`,
-  //   handler: async (request, reply) => {
-  //     let parms = request.payload;
-  //     let res = await users.createUser(parms);
-  //     middleware.dbErrorMiddleware(res,reply)
-  //   },
-  //   config: {
-  //     tags: ['api', GROUP_NAME],
-  //     description: '添加新用户',
-  //     validate: {
-  //       payload: Joi.object().keys({
-  //           name: Joi.string().required(),
-  //           email: Joi.string(),
-  //         })
-  //     },
-  //   }
-  // },
+  {
+    method: 'POST',
+    path: `/${GROUP_NAME}/modfiyUserInfo`,
+    handler: async (request, reply) => {
+      let parms = request.payload;
+      let res = await users.modifyUser(parms);
+      middleware.dbErrorMiddleware(res,reply)
+    },
+    config: {
+      tags: ['api', GROUP_NAME],
+      description: '修改用户信息',
+      validate: {
+        payload: Joi.object().keys({
+            id:Joi.number().integer().required(),
+            name: Joi.string(),
+            email: Joi.string(),
+            type: Joi.string(),
+            introduction:Joi.string()
+          })
+      },
+    }
+  },
+  {
+    method: 'POST',
+    path: `/${GROUP_NAME}/deleteUser`,
+    handler: async (request, reply) => {
+      let parms = request.payload;
+      let res = await users.deleteUser(parms);
+      middleware.dbErrorMiddleware(res,reply)
+    },
+    config: {
+      tags: ['api', GROUP_NAME],
+      description: '删除新用户',
+      validate: {
+        payload: Joi.object().keys({
+            id: Joi.number().required()
+        })
+      },
+    }
+  },
 
 ]
