@@ -1,6 +1,6 @@
 // 引入 models
 const models = require("../models");
-const code = require('../lib/code');
+
 
 _judgeAdmin = (obj) =>{
     if(obj.type==='admin'){
@@ -28,9 +28,6 @@ createUser = async (parms) => {
         return {results:'success',dataBaseError:false}
     }
     catch(e){
-        // if(e.name==='SequelizeUniqueConstraintError'){
-        //     let msg = e.fields
-        // }
         return {results:e,dataBaseError:true}
     }
 }
