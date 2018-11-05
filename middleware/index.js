@@ -21,7 +21,11 @@ function unKnownError(response) {
     return code.formatCode(2, null, response.results, 'dataBaseError')
 }
 
-function dbErrorMiddleware(response, reply) {
+function loginError(response){
+    return code.formatCode(3, null, response.results, 'username or password wrong')
+}
+
+function dbErrorMiddleware(request,response, reply) {
     var reply_content = null;
     if (response.dataBaseError) {
         var res = response.results;
@@ -35,14 +39,16 @@ function dbErrorMiddleware(response, reply) {
         }
     }
     else {
-        reply_content = sucessRequest(response)
+        if(request.path=='/user/login'){
+            reply_content = loginError(response)
+        }
+        else{
+            reply_content = sucessRequest(response)
+        }
     }
     reply(reply_content)
 }
 
-function authRequireMiddleware() {
-
-}
 
 module.exports = {
     dbErrorMiddleware: dbErrorMiddleware

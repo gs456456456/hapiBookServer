@@ -5,6 +5,10 @@ const routes = require('./routes');
 const pluginHapiSwagger = require('./plugins/hapi-swagger');
 const log = require('./log')
 const pluginHapiPagination = require('./plugins/hapi-pagination');
+const hapiAuthJWT2 = require('hapi-auth-jwt2');
+const pluginHapiAuthJWT2 = require('./plugins/hapi-auth-jwt2');
+
+
 
 
 const server = new Hapi.Server();
@@ -16,12 +20,14 @@ server.connection({
 
 
 const init = async () => {
+  await server.register(hapiAuthJWT2);
   await server.register([
-    // 为系统使用 hapi-swagger
     ...pluginHapiSwagger,
     pluginHapiPagination.pageOptions,
-    log.logOptions
+    log.logOptions,
   ]);
+  //加载jwt插件
+  pluginHapiAuthJWT2(server);
   server.route([
     // 创建一个简单的hello hapi接口
     ...routes,

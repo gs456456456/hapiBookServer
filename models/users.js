@@ -31,6 +31,9 @@ module.exports = (sequelize, DataTypes) => sequelize.define(
         introduction: {
             type: DataTypes.STRING(50),
         },
+        password:{
+            type: DataTypes.STRING(20),
+        },
         login_time: DataTypes.DATE,
         last_login_time: DataTypes.DATE,
         login_count: DataTypes.INTEGER,

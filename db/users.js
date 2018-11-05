@@ -9,6 +9,8 @@ _judgeAdmin = (obj) =>{
     return false
 }
 
+
+
 queryUser = async (parms) =>{
     try{
         let result = await models.users.findAll({
