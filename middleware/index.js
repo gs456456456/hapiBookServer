@@ -22,29 +22,29 @@ function unKnownError(response) {
 }
 
 function loginError(response){
-    return code.formatCode(3, null, response.results, 'username or password wrong')
+    return code.formatCode(3, null, '', 'username or password wrong')
 }
 
 function dbErrorMiddleware(request,response, reply) {
     var reply_content = null;
     if (response.dataBaseError) {
         var res = response.results;
-        switch (res.name) {
-            case 'SequelizeUniqueConstraintError':
-                reply_content = notUniqueError(res)
-                break
-            default:
-                reply_content = unKnownError(response)
-                break
-        }
-    }
-    else {
         if(request.path=='/user/login'){
             reply_content = loginError(response)
         }
         else{
-            reply_content = sucessRequest(response)
+            switch (res.name) {
+                case 'SequelizeUniqueConstraintError':
+                    reply_content = notUniqueError(res)
+                    break
+                default:
+                    reply_content = unKnownError(response)
+                    break
+            }
         }
+    }
+    else {
+        reply_content = sucessRequest(response)
     }
     reply(reply_content)
 }

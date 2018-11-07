@@ -33,12 +33,12 @@ module.exports = [
     handler: async (request, reply) => {
       let parms = request.payload;
       let res = await users.queryUser(parms);
-      let generateKey = utils.generateJWT({
-        userId: res.id
-      });
       if((!res.dataBaseError)&&res.results.length>0){
-        res.results = generateKey
-      }
+          let generateKey = utils.generateJWT({
+            userId: res.results[0].id
+          });
+          res.results = generateKey
+        }
       middleware.dbErrorMiddleware(request,res,reply)
     },
     config: {
