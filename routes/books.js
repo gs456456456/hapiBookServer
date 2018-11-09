@@ -45,7 +45,11 @@ module.exports = [
             price: Joi.number().required(),
             pagecount:Joi.number(),
             binding:Joi.string(),
-            description:Joi.string()
+            description:Joi.string(),
+            publishingFirm:Joi.string(),
+            author_id:Joi.number().required(),
+            img_url:Joi.string(),
+            book_created_date:Joi.date()
           })
       },
     }
@@ -71,7 +75,9 @@ module.exports = [
           price: Joi.number(),
           pagecount:Joi.number(),
           binding:Joi.string(),
-          description:Joi.string()
+          description:Joi.string(),
+          img_url:Joi.string(),
+          book_created_date:Joi.date()
         })
       },
     }

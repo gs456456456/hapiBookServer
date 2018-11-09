@@ -14,28 +14,26 @@ const validate =async (decoded, request, callback) => {
   */
   // decoded 为 JWT payload 被解码后的数据
   const { userId } = decoded;
-  console.log(request)
 
-
-
-  if (!userId) {
+  const id = userId.userId
+  if (!id) {
     return callback(error, false, userId);
   }
   //验证用户权限
   let result = await models.users.find({
     where:{
-      id:userId,
+      id:id,
       isAdmin:true
     }
   });
 
   if(!result){
-    return callback(error, false, userId);
+    return callback(error, false, id);
   }
 
 
   const credentials = {
-    userId,
+    id,
   };
   // 在路由接口的 handler 通过 request.auth.credentials 获取 jwt decoded 的值
   return callback(error, true, credentials);

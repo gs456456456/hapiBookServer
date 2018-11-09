@@ -3,7 +3,6 @@ module.exports = (sequelize, DataTypes) => sequelize.define(
     {
         id: {
             type: DataTypes.INTEGER,
-            autoIncrement: true,
             primaryKey: true,
         },
         name: {
@@ -31,6 +30,22 @@ module.exports = (sequelize, DataTypes) => sequelize.define(
         description:{
             type: DataTypes.STRING
         },
+        author_id:{
+            type: DataTypes.INTEGER,
+            references: {
+                model: 'authors',
+                key: 'id'
+            }
+        },
+        publishingFirm:{
+            type: DataTypes.STRING
+        },
+        img_url:{
+            type: DataTypes.STRING
+        },
+        book_created_date:{
+            type:DataTypes.DATE
+        }
     },
 
     {

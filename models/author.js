@@ -3,7 +3,6 @@ module.exports = (sequelize, DataTypes) => sequelize.define(
     {
         id: {
             type: DataTypes.INTEGER,
-            autoIncrement: true,
             primaryKey: true,
         },
         name: {
@@ -12,6 +11,9 @@ module.exports = (sequelize, DataTypes) => sequelize.define(
         },
         country: {
             type: DataTypes.STRING(20),
+        },
+        description:{
+            type: DataTypes.STRING,
         },
         created_at: DataTypes.DATE,
         updated_at: DataTypes.DATE,

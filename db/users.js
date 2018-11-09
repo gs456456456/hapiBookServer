@@ -25,7 +25,7 @@ queryUser = async (parms) =>{
 
 createUser = async (parms) => {
     try{
-        parms.isAdmin = _judgeAdmin(parms);
+        // parms.isAdmin = _judgeAdmin(parms);
         let result = await models.users.create(parms);
         return {results:'success',dataBaseError:false}
     }
@@ -35,7 +35,7 @@ createUser = async (parms) => {
 }
 modifyUser = async (parms) =>{
     try{
-        parms.isAdmin = _judgeAdmin(parms);
+        // parms.isAdmin = _judgeAdmin(parms);
         await models.users.update(parms,
             {where: {id: parms.id}});
         return {results:'success',dataBaseError:false}

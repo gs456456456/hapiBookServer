@@ -3,7 +3,6 @@ module.exports = (sequelize, DataTypes) => sequelize.define(
     {
         id: {
             type: DataTypes.INTEGER,
-            autoIncrement: true,
             primaryKey: true,
         },
         name: {
@@ -14,19 +13,19 @@ module.exports = (sequelize, DataTypes) => sequelize.define(
             type: DataTypes.STRING(10),
             defaultValue: 'user'
         },
-        isAdmin: {
-            type: DataTypes.BOOLEAN,
-            defaultValue: false
-        },
+        // isAdmin: {
+        //     type: DataTypes.BOOLEAN,
+        //     defaultValue: false
+        // },
         email: {
             type: DataTypes.STRING(30),
         },
         // follower_id: {
         //     type: DataTypes.INTEGER,
-        //     references: {
-        //         model: 'users',
-        //         key: 'id'
-        //     }
+            // references: {
+            //     model: 'users',
+            //     key: 'id'
+            // }
         // },
         introduction: {
             type: DataTypes.STRING(50),
@@ -34,6 +33,7 @@ module.exports = (sequelize, DataTypes) => sequelize.define(
         password:{
             type: DataTypes.STRING(20),
         },
+        
         login_time: DataTypes.DATE,
         last_login_time: DataTypes.DATE,
         login_count: DataTypes.INTEGER,
