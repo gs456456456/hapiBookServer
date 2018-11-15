@@ -17,7 +17,7 @@ server.connection({
   host: config.HOST,
 });
 
-
+const insert = require('inert')
 
 const init = async () => {
   await server.register(hapiAuthJWT2);
@@ -25,6 +25,7 @@ const init = async () => {
     ...pluginHapiSwagger,
     pluginHapiPagination.pageOptions,
     log.logOptions,
+    insert
   ]);
   //加载jwt插件
   pluginHapiAuthJWT2(server);

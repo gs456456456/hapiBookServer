@@ -73,6 +73,22 @@ module.exports = [
     }
   },
   {
+    method: 'GET',
+    path: `/${GROUP_NAME}/getUserInfo`,
+    handler: async (request, reply) => {
+      let res = await users.queryLoginUser(request);
+      middleware.dbErrorMiddleware(request,res,reply)
+    },
+    config: {
+      tags: ['api', GROUP_NAME],
+      description: '查询当前用户信息',
+      validate:{
+        ...jwtHeaderDefine
+      },
+      auth:false
+    }
+  },
+  {
     method: 'POST',
     path: `/${GROUP_NAME}/addUser`,
     handler: async (request, reply) => {
@@ -98,21 +114,20 @@ module.exports = [
     method: 'POST',
     path: `/${GROUP_NAME}/modfiyUserInfo`,
     handler: async (request, reply) => {
-      let parms = request.payload;
-      let res = await users.modifyUser(parms);
+      let res = await users.modifyUser(request);
       middleware.dbErrorMiddleware(request,res,reply)
     },
     config: {
       tags: ['api', GROUP_NAME],
       description: '修改用户信息',
+      auth:false,
       validate: {
         ...jwtHeaderDefine,
         payload: Joi.object().keys({
-            id:Joi.number().integer().required(),
             name: Joi.string(),
+            password:Joi.string(),
             email: Joi.string(),
-            type: Joi.string(),
-            introduction:Joi.string()
+            introduction:Joi.string(),
           })
       },
     }

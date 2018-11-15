@@ -6,3 +6,8 @@
 评论有用无用 +字段
 标签字段 通过字符分割
 修改独立字段
+
+
+//待迁移修改的表字段
+book --- score price description
+author --- description

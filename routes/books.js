@@ -77,7 +77,9 @@ module.exports = [
           binding:Joi.string(),
           description:Joi.string(),
           img_url:Joi.string(),
-          book_created_date:Joi.date()
+          book_created_date:Joi.date(),
+          publishingFirm: Joi.string()
+
         })
       },
     }
@@ -101,5 +103,24 @@ module.exports = [
       },
     }
   },
-
+  {
+    method: 'GET',
+    path: `/${GROUP_NAME}/searchBook`,
+    handler: async (request, reply) => {
+      let res = await books.searchBook(request);
+      middleware.dbErrorMiddleware(request,res,reply)
+    },
+    config: {
+      tags: ['api', GROUP_NAME],
+      description: '按照指定条件搜索书本',
+      auth:false,
+      validate: {
+        query: {
+          ...paginationDefine,
+          keyname:Joi.string(),
+          keyvalue: Joi.string()
+        }
+      },
+    }
+  }
 ]

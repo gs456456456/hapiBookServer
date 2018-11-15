@@ -11,21 +11,15 @@ module.exports = [
     ...author,
     {
         method: 'GET',
-        path: '/',
-        handler: (request, reply) => {
-            request.plugins.good = {
-                suppressResponseEvent: true
-            };        
-          reply('hello hapi');
-        },
-        config: {
-          tags: ['api', 'tests'],
-          description: '测试hello-hapi',
-          plugins: {
-            good: {
-                suppressResponseEvent: true
-                }
+        path: '/{param*}',
+        handler: {
+            directory: {
+                path: 'frontend',
+                index: ['index.html', 'default.html']
             }
         },
+        config:{
+            auth:false
+        }
       },
   ]

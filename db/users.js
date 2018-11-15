@@ -1,6 +1,6 @@
 // 引入 models
 const models = require("../models");
-
+const JWT = require('jsonwebtoken');
 
 _judgeAdmin = (obj) =>{
     if(obj.type==='admin'){
@@ -9,12 +9,25 @@ _judgeAdmin = (obj) =>{
     return false
 }
 
-
-
 queryUser = async (parms) =>{
     try{
         let result = await models.users.findAll({
-            where: parms
+            where: parms,
+            attributes:['id','name','email','introduction','created_at','updated_at']
+          });
+        return {results:result,dataBaseError:false}
+    }
+    catch(e){
+        return {results:e,dataBaseError:true}
+    }
+}
+
+queryLoginUser = async (request) =>{
+    try{
+        let userJwt = JWT.decode(request.headers.authorization)
+        let result = await models.users.findAll({
+            where: {'id':userJwt.userId.userId},
+            attributes:['id','name','email','introduction','created_at','updated_at']
           });
         return {results:result,dataBaseError:false}
     }
@@ -33,11 +46,11 @@ createUser = async (parms) => {
         return {results:e,dataBaseError:true}
     }
 }
-modifyUser = async (parms) =>{
+modifyUser = async (request) =>{
     try{
-        // parms.isAdmin = _judgeAdmin(parms);
-        await models.users.update(parms,
-            {where: {id: parms.id}});
+        let userJwt = JWT.decode(request.headers.authorization);
+        await models.users.update(request.payload,
+            {where: {id: userJwt.userId.userId}});
         return {results:'success',dataBaseError:false}
     }
     catch(e){
@@ -60,5 +73,6 @@ module.exports = {
     queryUser:queryUser,
     createUser:createUser,
     modifyUser:modifyUser,
-    deleteUser:deleteUser
+    deleteUser:deleteUser,
+    queryLoginUser:queryLoginUser
 }

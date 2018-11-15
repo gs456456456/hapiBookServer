@@ -1,4 +1,5 @@
-module.exports = (sequelize, DataTypes) => sequelize.define(
+module.exports = (sequelize, DataTypes) => {
+    const books = sequelize.define(
     'books',
     {
         id: {
@@ -14,11 +15,11 @@ module.exports = (sequelize, DataTypes) => sequelize.define(
             allowNull: false
         },
         score: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.FLOAT,
             // allowNull: false
         },
         price:{ 
-            type: DataTypes.INTEGER,
+            type: DataTypes.FLOAT,
             allowNull: false
         },
         pagecount:{
@@ -49,6 +50,12 @@ module.exports = (sequelize, DataTypes) => sequelize.define(
     },
 
     {
-        tableName: 'books',
-    },
-)
+        tableName: 'books'
+    })
+
+    books.associate = function(models) {
+        books.belongsTo(models.authors,{foreignKey: 'author_id', sourceKey: 'id'});
+        books.hasMany(models.reviews, { foreignKey: 'book_id', sourceKey: 'id' });
+  };
+  return books;
+}
