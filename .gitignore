@@ -1,5 +1,6 @@
 /node_modules/
 /.vscode/
 /test/
+/frontend/
 test/fixtures/awesome_log
 .env
