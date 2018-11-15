@@ -11,4 +11,5 @@
 //待迁移修改的表字段
 book --- score price description
 author --- description
-用户不可修改其他用户评论的判断 判断userID
+用户不可修改其他用户评论的判断 判断userID ---done
+review主键名称

@@ -119,7 +119,7 @@ module.exports = [
     },
     config: {
       tags: ['api', GROUP_NAME],
-      description: '修改用户信息',
+      description: '修改当前用户信息',
       auth:false,
       validate: {
         ...jwtHeaderDefine,

@@ -2,7 +2,7 @@ module.exports = (sequelize, DataTypes) => {
     const reviews = sequelize.define(
         'reviews',
         {
-            id: {
+            review_id: {
                 type: DataTypes.INTEGER,
                 primaryKey: true,
             },

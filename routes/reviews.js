@@ -22,7 +22,7 @@ module.exports = [
         validate: {
            ...jwtHeaderDefine,
            payload: Joi.object().keys({
-               book_name: Joi.string().required(),
+               book_id: Joi.number().required(),
                title:Joi.string().required(),
                star:Joi.number().required(),
                content:Joi.string().required(),
@@ -63,7 +63,7 @@ module.exports = [
       },
       config: {
         tags: ['api', GROUP_NAME],
-        description: '修改评论',
+        description: '删除评论',
         auth:false,
         validate: {
            ...jwtHeaderDefine,

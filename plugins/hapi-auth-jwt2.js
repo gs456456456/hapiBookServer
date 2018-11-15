@@ -1,7 +1,7 @@
 const config = require('../config');
 const models = require("../models");
 
-const validate =async (decoded, request, callback) => {
+const validate = async (decoded, request, callback) => {
   let error;
   /*
     接口 POST /users/createJWT 中的 jwt 签发规则

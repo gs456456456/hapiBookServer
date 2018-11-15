@@ -3,6 +3,29 @@ const models = require("../models");
 const code = require('../lib/code');
 const JWT = require('jsonwebtoken');
 
+
+queryIfOwnReview = async (userId,reviewId) =>{
+    try{
+        //判断是否是管理员
+        if(userId==1){
+            return true
+        }
+        else{
+            let res = await models.reviews.findAll({
+                where:{
+                    user_id:userId,
+                    review_id:reviewId
+                }
+            })
+            return res.length>0?true:false
+        }
+    }
+    catch(e){
+        return false
+    }
+}
+
+
 addReviewByBook = async (request) => {
     try{
         let userJwt = JWT.decode(request.headers.authorization);
@@ -32,6 +55,10 @@ addReviewByBook = async (request) => {
 modifyReviewById = async (request) => {
     try{
         let userJwt = JWT.decode(request.headers.authorization);
+        let ifRight = await queryIfOwnReview(userJwt.userId.userId,request.payload.id)
+        if(!ifRight){
+            return {results:{name:'parmsError',msg:'have no rights or error parms'},dataBaseError:true}
+        }
         await models.reviews.update(request.payload,{where:{
             id:request.payload.id
         }})
@@ -67,8 +94,12 @@ queryReviewByBook = async (request) => {
 deleteReviewById = async (request) => {
     try{
         let userJwt = JWT.decode(request.headers.authorization);
+        let ifRight = await queryIfOwnReview(userJwt.userId.userId,request.payload.id)
+        if(!ifRight){
+            return {results:{name:'parmsError',msg:'have no rights or error parms'},dataBaseError:true}
+        }
         await models.reviews.destroy({where:{
-            id:request.payload.id
+            review_id:request.payload.id
         }})
         return {results:'success',dataBaseError:false}
     }
