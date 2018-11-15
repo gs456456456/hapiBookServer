@@ -2,6 +2,7 @@ const users = require('./users')
 const books = require('./books')
 const auth = require('./auth')
 const author = require('./author')
+const reviews = require('./reviews')
 
 
 module.exports = [
@@ -9,6 +10,7 @@ module.exports = [
     ...books,
     ...auth,
     ...author,
+    ...reviews,
     {
         method: 'GET',
         path: '/{param*}',

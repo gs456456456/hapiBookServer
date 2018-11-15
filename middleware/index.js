@@ -17,8 +17,12 @@ function sucessRequest(response) {
     return code.formatCode(1, response.results, 'success')
 }
 
-function unKnownError(response) {
-    return code.formatCode(2, null, response.results, 'dataBaseError')
+function unKnownError(response,msg) {
+    let errMsg = 'dataBaseError';
+    if(msg){
+        errMsg = msg
+    }
+    return code.formatCode(2, response.results, errMsg,response.results.name)
 }
 
 function loginError(response){
@@ -38,7 +42,7 @@ function dbErrorMiddleware(request,response, reply) {
                     reply_content = notUniqueError(res)
                     break
                 default:
-                    reply_content = unKnownError(response)
+                    reply_content = unKnownError(response,res.msg)
                     break
             }
         }

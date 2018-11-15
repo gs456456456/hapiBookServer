@@ -28,7 +28,7 @@ module.exports = (sequelize, DataTypes) => {
             user_id: {
                 type: DataTypes.INTEGER,
                 references: {
-                    model: 'books',
+                    model: 'users',
                     key: 'id'
                 }
             },
@@ -43,8 +43,8 @@ module.exports = (sequelize, DataTypes) => {
         })
 
     reviews.associate = function (models) {
-        reviews.belongsTo(models.books, { foreignKey: 'id', sourceKey: 'user_id' })
-        reviews.belongsTo(models.users, { foreignKey: 'id', sourceKey: 'book_id' })
+        reviews.belongsTo(models.books, { foreignKey: 'id', sourceKey: 'book_id' })
+        reviews.belongsTo(models.users, { foreignKey: 'id', sourceKey: 'user_id' })
     };
     return reviews;
 }
