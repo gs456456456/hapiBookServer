@@ -26,6 +26,25 @@ module.exports = [
     }
   },
   {
+    method: 'GET',
+    path: `/${GROUP_NAME}/queryBookById`,
+    handler: async (request, reply) => {
+      let res = await books.queryBookById(request);
+      middleware.dbErrorMiddleware(request,res,reply)
+    },
+    config: {
+      tags: ['api', GROUP_NAME],
+      description: '查询指定书本信息',
+      auth:false,
+      validate: {
+        query: {
+          ...paginationDefine,
+          id:Joi.number().required()
+        }
+      },
+    }
+  },
+  {
     method: 'POST',
     path: `/${GROUP_NAME}/addBook`,
     handler: async (request, reply) => {
