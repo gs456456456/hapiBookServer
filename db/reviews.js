@@ -37,14 +37,17 @@ addReviewByBook = async (request) => {
         if(!book_id){
             return {results:{name:'noResultError',msg:'book is not found'},dataBaseError:true}
         }
-        await models.reviews.create({
+        let parms = {
             user_id: userJwt.userId.userId,
             book_id:book_id.id,
             img_url:request.payload.img_url,
-            title:request.payload.title,
             content:request.payload.content,
             star:request.payload.star
-        })
+        }
+        if(request.payload.title){
+            parms['title'] = request.payload.title
+        }
+        await models.reviews.create(parms)
         return {results:'success',dataBaseError:false}
     }
     catch(e){

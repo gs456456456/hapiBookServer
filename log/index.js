@@ -3,7 +3,7 @@ const logOptions =
     register: require('good'),
     options: {
         ops: {
-            interval: 1000
+            interval: 3600000
         },
         reporters: {
             myConsoleReporter: [{
@@ -12,12 +12,12 @@ const logOptions =
                 args: [{ log: '*', response: '*' }]
             }, {
                 module: 'good-console',
-                args: [{ error: '*', requset: '*' }]
+                args: [{ error: '*', request: '*' }]
             }, 'stdout'],
             myFileReporter: [{
                 module: 'good-squeeze',
                 name: 'Squeeze',
-                args: [{ ops: '*' }]
+                args: [{ ops: '*',response:'*',request:'*' }]
             }, {
                 module: 'good-squeeze',
                 name: 'SafeJson'

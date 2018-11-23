@@ -9,12 +9,18 @@ const hapiAuthJWT2 = require('hapi-auth-jwt2');
 const pluginHapiAuthJWT2 = require('./plugins/hapi-auth-jwt2');
 
 
+//设置跨域
+// route.options.cors = 
+
 
 
 const server = new Hapi.Server();
 server.connection({
   port: config.PORT,
   host: config.HOST,
+  routes: {
+    cors: true
+  }
 });
 
 const insert = require('inert')

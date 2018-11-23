@@ -1,12 +1,17 @@
 // 引入 models
 const models = require("../models");
 const code = require('../lib/code');
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
 
 queryBook = async (request) =>{
     try{
         let { rows: results, count: totalCount } = await models.books.findAndCountAll({
             limit: request.query.limit,
             offset: (request.query.page - 1) * request.query.limit,
+            include: {
+                model: models.authors
+              }
           });
         return {results:results,totalCount:totalCount,dataBaseError:false}
     }
@@ -22,7 +27,31 @@ queryBookById = async (request) =>{
             offset: (request.query.page - 1) * request.query.limit,
             where:{
                 id:request.query.id
-            }
+            },
+            include: {
+                model: models.authors
+              }
+          });
+        return {results:results,totalCount:totalCount,dataBaseError:false}
+    }
+    catch(e){
+        return {results:e,dataBaseError:true}
+    }
+}
+
+queryQualityBook = async (request) =>{
+    try{
+        let { rows: results, count: totalCount } = await models.books.findAndCountAll({
+            limit: request.query.limit,
+            offset: (request.query.page - 1) * request.query.limit,
+            include: {
+                model: models.authors
+            },
+            where:{
+                score:{
+                   [Op.gt]: 9
+                }
+            },
           });
         return {results:results,totalCount:totalCount,dataBaseError:false}
     }
@@ -104,5 +133,6 @@ module.exports = {
     modifyBook:modifyBook,
     deleteBook:deleteBook,
     searchBook:searchBook,
-    queryBookById:queryBookById
+    queryBookById:queryBookById,
+    queryQualityBook:queryQualityBook
 }

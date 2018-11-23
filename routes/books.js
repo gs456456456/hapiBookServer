@@ -27,6 +27,24 @@ module.exports = [
   },
   {
     method: 'GET',
+    path: `/${GROUP_NAME}/queryQualityBook`,
+    handler: async (request, reply) => {
+      let res = await books.queryQualityBook(request);
+      middleware.dbErrorMiddleware(request,res,reply)
+    },
+    config: {
+      tags: ['api', GROUP_NAME],
+      description: '查询精品书本',
+      auth:false,
+      validate: {
+        query: {
+          ...paginationDefine
+        }
+      },
+    }
+  },
+  {
+    method: 'GET',
     path: `/${GROUP_NAME}/queryBookById`,
     handler: async (request, reply) => {
       let res = await books.queryBookById(request);

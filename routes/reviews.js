@@ -23,7 +23,7 @@ module.exports = [
            ...jwtHeaderDefine,
            payload: Joi.object().keys({
                book_id: Joi.number().required(),
-               title:Joi.string().required(),
+               title:Joi.string(),
                star:Joi.number().required(),
                content:Joi.string().required(),
                img_url:Joi.string()
