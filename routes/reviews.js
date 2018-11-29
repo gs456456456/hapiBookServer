@@ -85,7 +85,7 @@ module.exports = [
         description: '查询评论',
         auth:false,
         validate: {
-           ...jwtHeaderDefine,
+          //  ...jwtHeaderDefine,
            query: {
             ...paginationDefine,
             book_id: Joi.string().required(),
