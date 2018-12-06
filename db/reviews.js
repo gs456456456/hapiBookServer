@@ -79,6 +79,9 @@ queryReviewByBook = async (request) => {
         let { rows: results, count: totalCount } = await models.reviews.findAndCountAll({
             limit: request.query.limit,
             offset: (request.query.page - 1) * request.query.limit,
+            include: {
+                model: models.users
+            },
             where:{
                 // user_id: userJwt.userId.userId,
                 book_id:request.query.book_id

@@ -33,6 +33,9 @@ module.exports = [
     handler: async (request, reply) => {
       let parms = request.payload;
       let res = await users.queryUser(parms);
+      if(res.results.length<1){
+        res.dataBaseError = true
+      }
       if((!res.dataBaseError)&&res.results.length>0){
           let generateKey = utils.generateJWT({
             userId: res.results[0].id
