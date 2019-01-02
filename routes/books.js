@@ -27,6 +27,25 @@ module.exports = [
   },
   {
     method: 'GET',
+    path: `/${GROUP_NAME}/queryCollectBook`,
+    handler: async (request, reply) => {
+      let res = await books.queryCollectBook(request);
+      middleware.dbErrorMiddleware(request,res,reply)
+    },
+    config: {
+      tags: ['api', GROUP_NAME],
+      description: '查询收藏书本信息',
+      auth:false,
+      validate: {
+        ...jwtHeaderDefine,
+        query: {
+          ...paginationDefine
+        }
+      },
+    }
+  },
+  {
+    method: 'GET',
     path: `/${GROUP_NAME}/queryQualityBook`,
     handler: async (request, reply) => {
       let res = await books.queryQualityBook(request);
@@ -88,6 +107,44 @@ module.exports = [
             img_url:Joi.string(),
             book_created_date:Joi.date()
           })
+      },
+    }
+  },
+  {
+    method: 'POST',
+    path: `/${GROUP_NAME}/addCollectBook`,
+    handler: async (request, reply) => {
+      let parms = request.payload;
+      let res = await books.addCollectBook(request);
+      middleware.dbErrorMiddleware(request,res,reply)
+    },
+    config: {
+      tags: ['api', GROUP_NAME],
+      description: '添加收藏',
+      validate: {
+        ...jwtHeaderDefine,
+        payload: Joi.object().keys({
+          book_id: Joi.number().required(),
+          })
+      },
+    }
+  },
+  {
+    method: 'POST',
+    path: `/${GROUP_NAME}/cancelCollectBook`,
+    handler: async (request, reply) => {
+      let parms = request.payload;
+      let res = await books.cancelCollectBook(request);
+      middleware.dbErrorMiddleware(request,res,reply)
+    },
+    config: {
+      tags: ['api', GROUP_NAME],
+      description: '取消收藏',
+      validate: {
+        ...jwtHeaderDefine,
+        payload: Joi.object().keys({
+          book_id: Joi.number().required(),
+        })
       },
     }
   },

@@ -3,6 +3,7 @@ const models = require("../models");
 const code = require('../lib/code');
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
+const JWT = require('jsonwebtoken');
 
 queryBook = async (request) =>{
     try{
@@ -115,6 +116,7 @@ modifyBook = async (parms) =>{
         return {results:e,dataBaseError:true}
     }
 }
+
 deleteBook = async (parms) =>{
     try{
          await models.books.destroy(
@@ -126,6 +128,76 @@ deleteBook = async (parms) =>{
     }
 }
 
+queryCollectBook = async (request) =>{
+    try{
+        let userJwt = JWT.decode(request.headers.authorization);
+        let { rows: results, count: totalCount } = await models.collect.findAndCountAll({
+            limit: request.query.limit,
+            offset: (request.query.page - 1) * request.query.limit,
+            include: {
+                model: models.users
+            },
+            where:{
+                userId: userJwt.userId.userId
+            }
+          });
+        return {results:results,totalCount:totalCount,dataBaseError:false}
+    }
+    catch(e){
+        return {results:e,dataBaseError:true}
+    }
+}
+
+
+cancelCollectBook = async (request) =>{
+    try{
+        let userJwt = JWT.decode(request.headers.authorization);
+        let parms = {
+            userId: userJwt.userId.userId,
+            bookId:request.payload.book_id
+        }
+        await models.collect.destroy({where:parms});
+        return {results:'success',dataBaseError:false}
+    }
+    catch(e){
+        return {results:e,dataBaseError:true}
+    }
+}
+
+
+addCollectBook = async (request) =>{
+    try{
+        let userJwt = JWT.decode(request.headers.authorization);
+        let book_id = await models.books.find({
+            where:{
+                id:request.payload.book_id
+            }
+        })
+        if(!book_id){
+            return {results:{name:'noResultError',msg:'book is not found'},dataBaseError:true}
+        }
+        let collect = await models.collect.find({
+            where:{
+                userId: userJwt.userId.userId,
+                bookId:book_id.id
+            }
+        })
+        if(collect){
+            return {results:{name:'noRepeatError',msg:'book has already been collected'},dataBaseError:true}
+        }
+        let parms = {
+            userId: userJwt.userId.userId,
+            bookId:book_id.id
+        }
+        await models.collect.create(parms)
+        return {results:'success',dataBaseError:false}
+    }
+    catch(e){
+        return {results:e,dataBaseError:true}
+    }
+}
+
+
 
 module.exports = {
     queryBook:queryBook,
@@ -134,5 +206,8 @@ module.exports = {
     deleteBook:deleteBook,
     searchBook:searchBook,
     queryBookById:queryBookById,
-    queryQualityBook:queryQualityBook
+    queryQualityBook:queryQualityBook,
+    addCollectBook:addCollectBook,
+    cancelCollectBook:cancelCollectBook,
+    queryCollectBook:queryCollectBook
 }
