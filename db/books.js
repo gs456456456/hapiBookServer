@@ -134,10 +134,12 @@ queryCollectBook = async (request) =>{
         let { rows: results, count: totalCount } = await models.collect.findAndCountAll({
             limit: request.query.limit,
             offset: (request.query.page - 1) * request.query.limit,
-            include: {
+            include: [{
                 model: models.users,
-                model: models.books
-            },
+            },{
+                model: models.books,
+                include:{model:models.authors}
+            }],
             where:{
                 userId: userJwt.userId.userId
             }
