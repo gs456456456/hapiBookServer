@@ -136,7 +136,8 @@ queryCollectBook = async (request) =>{
             offset: (request.query.page - 1) * request.query.limit,
             include: {
                 model: models.users,
-                model: models.books
+                model: models.books,
+                model: models.authors
             },
             where:{
                 userId: userJwt.userId.userId
