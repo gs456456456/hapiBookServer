@@ -121,6 +121,7 @@ module.exports = [
     config: {
       tags: ['api', GROUP_NAME],
       description: '添加收藏',
+      auth:false,
       validate: {
         ...jwtHeaderDefine,
         payload: Joi.object().keys({
@@ -140,6 +141,7 @@ module.exports = [
     config: {
       tags: ['api', GROUP_NAME],
       description: '取消收藏',
+      auth:false,
       validate: {
         ...jwtHeaderDefine,
         payload: Joi.object().keys({
